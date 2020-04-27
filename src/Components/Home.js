@@ -11,7 +11,7 @@ class Home extends Component {
     }
     titleStyle = () => {
         return{
-            color: "aliceblue",
+            color: "black",
             fontSize: "40px"
         }
     }
@@ -21,8 +21,8 @@ class Home extends Component {
                 <div className="intro">
                     <div className="intro-name">
                         <h2 style={this.nameStyle()}>Yiyao (Jim) Wan</h2>
-                        <h3>Computing</h3>
-                        <h3>University of California, Santa Barbara</h3>
+                        <h3 style={{color: "aliceblue"}}>Computing</h3>
+                        <h3 style={{color: "aliceblue"}}>University of California, Santa Barbara</h3>
                     </div>
                 </div>
                 <div className="description">
