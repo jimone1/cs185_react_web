@@ -1,38 +1,148 @@
-.App {
-  text-align: center;
+#root{
+}
+/* navigation styles begin */
+a:link {
+    color: #ccc;
+    text-decoration: none;
+}
+/* visited link */
+a:visited {
+    color: #ccc;
+}
+/* mouse over link */
+a:hover {
+    color: #b654ca;
+}
+/* selected link */
+a:active {
+    color: #800000;
+}
+.main-body{
+    background-image: url(./assets/Images/Background.png);
+    background-color: rgb(53, 58, 44);
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+}
+/* Home Part */
+.home{
+    justify-content: center;
+    align-items: center;
+}
+.nav-bar{
+    display: flex;
+    color: aliceblue;
+    padding: 0% 0% 0% 3%;
+    height: 10vh;
+}
+.tabs{
+    padding: 40px 10px 0px 10px;
+}
+.tabs :hover{
+    color: greenyellow;
+}
+.tabs :active{
+    color: rgb(130, 194, 35);
+}
+h2{
+    color: aliceblue;
+    margin: auto;
+}
+.intro{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    height: 90vh;
+}
+.intro-name{
+    top: 40%;
+    position: absolute;
+}
+.description{
+    padding-top: 130px;
+    min-height: 450px;
+}
+.personal{
+    display: flex;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    margin-left: 10%;
+    margin-right: 10%;
+}
+.avatar{
+    justify-content: center;
+    align-items: center;
+    max-width: 400px;
+    padding: 2rem 5rem 2rem 5rem;
+}
+.greetings{
+    padding: 2rem 5rem 2rem 15rem;
+    text-align: center;
+    display: block;
+    min-width: 200px;
+    max-width: 600px;
+}
+.footer{
+    background-color: gray;
+    height: 400px;
+    width: 100%;
+}   
+.context{
+    height: auto;
+    width: 100%;
+    display: inline-flex;
+    padding-top: 150px;
+    justify-content: space-evenly;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Image Part */
+.image-gallery{
+    position: absolute;
+    padding-top: 50px; 
+    padding-bottom: 50px;
+    background-color: #2e2e2ebd;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-gap: 1rem; 
+    width: 100%;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+img{
+    width: 100%;
+    height: auto;
+    max-width: 400px;
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+/* Video Part */
+.videos-gallery{
+    padding-top: 50px; 
+    padding-bottom: 50px;
+    background-color: #2e2e2ebd;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-gap: 1rem; 
+    position: relative;
 }
-
-.App-link {
-  color: #61dafb;
+.video{
+    margin: auto;
 }
+/* Project Part */
+.project-gallery{
+    padding-top: 50px;
+    padding-bottom: 50px;
+    background-color: #2e2e2ebd;
+    height: auto;
+    display: block;
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+}
+.project{
+    width: 100%;
+    display: flex;
+}
+.project-image{
+    max-width: 550px;
+    height: auto;
+}
+.project-context{
+    padding-left: 10%;
+    text-align: center;
+    align-self: center;
+    color: aliceblue;
 }
