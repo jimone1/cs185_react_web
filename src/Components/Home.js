@@ -11,7 +11,7 @@ class Home extends Component {
     }
     titleStyle = () => {
         return{
-            color: "black",
+            color: "aliceblue",
             fontSize: "40px"
         }
     }
