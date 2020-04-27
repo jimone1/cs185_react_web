@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import TabList from './Components/TabList'
 import Body from './Components/Body'
+import {Helmet} from 'react-helmet'
 export class App extends Component{
   constructor(){
     super();
@@ -33,6 +34,9 @@ export class App extends Component{
     return (
       <div className="Body">
         <div className="main-body">
+          <Helmet>
+            <title>Jim's Webpage</title>
+          </Helmet>
           <div className="nav-bar">
             <TabList tabs={tabs} 
                     changeTab={this.changeTab} 
