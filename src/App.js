@@ -29,6 +29,9 @@ export class App extends Component{
       },{
         id: 4,
         title: 'PROJECTS'
+      },{
+        id: 5,
+        title: 'CONTACT'
       }
     ]
     return (

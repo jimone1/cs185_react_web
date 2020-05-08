@@ -3,6 +3,7 @@ import Home from './Home'
 import Images from './Images'
 import Videos from './Videos'
 import Projects from './Projects'
+import AskMeAnythingPage from './AskMeAnythingPage.js'
 
 class Body extends Component {
     displayContent = () => {
@@ -13,7 +14,10 @@ class Body extends Component {
             return <Images/>
         else if(activeTab === 3) 
             return <Videos/>
-        else return <Projects/>
+        else if(activeTab === 4) 
+            return <Projects/>
+        else if(activeTab === 5)
+            return <AskMeAnythingPage/>
     }
     render() {
         return (

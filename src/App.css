@@ -146,3 +146,19 @@ img{
     align-self: center;
     color: aliceblue;
 }
+
+.HomePage{
+  display: grid;
+  padding-top: 50px;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  grid-gap: 1rem;
+  margin-left: 5%;
+  margin-right: 5%;
+}
+.QandA {
+    background-color: rgba(194, 255, 199, 0.733);
+}
+.Display{
+  min-height: 400px;
+  background-color: rgba(194, 255, 199, 0.733);
+}
