@@ -5,7 +5,7 @@ class AllQuestion extends Component {
     render() {
         return (
             <div className="AllQuestion">
-                <QandA />
+                <QandA changeUpdate={this.props.changeUpdate}/>
             </div>
         );
     }

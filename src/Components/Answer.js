@@ -1,26 +1,16 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+
+import React, { Component } from 'react';
+// import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import fire from './config.js'
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-      display: 'flex',
-      flexWrap: 'wrap',
-    },
-    textField: {
-      marginLeft: theme.spacing(1),
-      marginRight: theme.spacing(1),
-      width: '25ch',
-    },
-}));
 
 const questionNames = [ 
     "What is your name?",
     "Offer a short description of yourself",
     "What have you to say?",
-    "Would you like your name and message to be viewable by other guests of this site?",
+    "Would you like your name and message to be viewable by other guests of this.state site?",
     "If you would like me to able to contact you, what is your email? (email won't be posted)"
 ];
 const options = [
@@ -53,35 +43,31 @@ function messageHelpText(messageToMe){
 }
 
 
-export default function Answer() {
-    const style = useStyles();    
-    const [opt, setOpt] = React.useState('false');
-    const [name, setName] = React.useState('defaultName');
-    const [description, setDescription] = React.useState('null');
-    const [wordToMe, setWordToMe] = React.useState('defaultWordToMeLongLongLong');
-    const [email, setEmail] = React.useState('null');
+class Answer extends Component {
 
-    var time = new Date().getTime();
-    var date = new Date(time).toString();
+    constructor(){
+        super();
+        var time = new Date().getTime();
+        this.state = {
+            opt: 'false',
+            name: 'defaultName',
+            description: 'null',
+            wordToMe: 'defaultWordToMeLongLongLong',
+            email: 'null',
+            date: new Date(time).toString()
+        }
+    }
 
-
-    // const [shouldRender, setShouldRender] = React.useState(true)
-    // useEffect( () => {
-    //     data = []
-    //     let ref = fire.database().ref('messages');
-    //     ref.on('value', snapshot => {
-    //         var state = snapshot.val()
-    //         var keys = Object.keys(state)
-    //         for(var i = keys.length-1; i >= 0; i--) data.push(state[keys[i]])
-    //     })   
-    //     setShouldRender(false);
-    // }, [shouldRender]);
-
-    return (
-        <form className={style.root} noValidate autoComplete="off">
+    render() {
+        return (
+        <form noValidate autoComplete="off" 
+            style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+            }}>
             <TextField required
-            error = {!checkName(name)}
-            helperText = {nameHelpText(name)}
+            error = {!checkName(this.state.name)}
+            helperText = {nameHelpText(this.state.name)}
             id="standard-full-width standard-required"
             label={questionNames[0]}
             style={{ margin: 8 }}
@@ -92,7 +78,7 @@ export default function Answer() {
                 shrink: true,
             }}
             variant="outlined"
-            onChange={(event) => {setName(event.target.value)}}
+            onChange={(event) => { this.setState({name: event.target.value})}}
             />
             <TextField 
             id="standard-full-width standard-required"
@@ -105,11 +91,11 @@ export default function Answer() {
                 shrink: true,
             }}
             variant="outlined"
-            onChange={(event) => {setDescription(event.target.value)}}
+            onChange={(event) => {this.state.setDescription(event.target.value)}}
             />
             <TextField required
-            error = {!checkMessage(wordToMe)}
-            helperText = {messageHelpText(wordToMe)}
+            error = {!checkMessage(this.state.wordToMe)}
+            helperText = {messageHelpText(this.state.wordToMe)}
             id="standard-full-width standard-required"
             label={questionNames[2]}
             style={{ margin: 8}}
@@ -120,7 +106,7 @@ export default function Answer() {
                 shrink: true,
             }}
             variant="outlined"
-            onChange={(event) => {setWordToMe(event.target.value)}}
+            onChange={(event) => {this.setState({wordToMe: event.target.value})}}
             />
             <TextField required select
             id="standard-full-width standard-required"
@@ -133,8 +119,8 @@ export default function Answer() {
                 shrink: true,
             }}
             variant="outlined"
-            value={opt}
-            onChange={(event) => {setOpt(event.target.value)}}
+            value={this.state.opt}
+            onChange={(event) => {this.setState({opt: event.target.value})}}
             >
                 {options.map((option) => (
                     <option key={option.value} value={option.value}>
@@ -153,29 +139,34 @@ export default function Answer() {
                 shrink: true,
             }}
             variant="outlined"
-            onChange={(event) => {setEmail(event.target.value)}}
+            onChange={(event) => {this.setState({email: event.target.value})}}
             />
             
             
             <Button variant="outlined" size="large" color="primary" style={{ margin: 8}} fullWidth onClick={() => {
-                if(checkName(name) && checkMessage(wordToMe) && name !== "defaultName" && wordToMe !== "defaultWordToMeLongLongLong"){
+                if(checkName(this.state.name) && checkMessage(this.state.wordToMe) && this.state.name !== "defaultName" && this.state.wordToMe !== "defaultWordToMeLongLongLong"){
                     fire.database().ref('messages').push({
-                    "name": name,
-                    "description": description,
-                    "wordToMe": wordToMe,
-                    "email": email,
-                    "time": date,
-                    "opt": opt
+                    "name": this.state.name,
+                    "description": this.state.description,
+                    "wordToMe": this.state.wordToMe,
+                    "email": this.state.email,
+                    "time": this.state.date,
+                    "opt": this.state.opt
                     });
-                    // setShouldRender(true);
+                    this.props.changeUpdate();
                     window.alert("Message Sent!");
-                }else if (name === "defaultName" && wordToMe === "defaultWordToMeLongLongLong"){
-                    setName(" ");
-                    setWordToMe(" ");
+                }else if (this.state.name === "defaultName" && this.state.wordToMe === "defaultWordToMeLongLongLong"){
+                    this.setState({
+                        'name': " ",
+                        'wordToMe': " "
+                    })
                 }
             }}>
                 Send the message
             </Button>
         </form>
-    );
+        );
+    }
 }
+
+export default Answer;
