@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import fire from './config.js'
-import * as firebase from 'firebase';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -61,7 +60,22 @@ export default function Answer() {
     const [description, setDescription] = React.useState('null');
     const [wordToMe, setWordToMe] = React.useState('defaultWordToMeLongLongLong');
     const [email, setEmail] = React.useState('null');
-    
+
+    var time = new Date().getTime();
+    var date = new Date(time).toString();
+
+
+    // const [shouldRender, setShouldRender] = React.useState(true)
+    // useEffect( () => {
+    //     data = []
+    //     let ref = fire.database().ref('messages');
+    //     ref.on('value', snapshot => {
+    //         var state = snapshot.val()
+    //         var keys = Object.keys(state)
+    //         for(var i = keys.length-1; i >= 0; i--) data.push(state[keys[i]])
+    //     })   
+    //     setShouldRender(false);
+    // }, [shouldRender]);
 
     return (
         <form className={style.root} noValidate autoComplete="off">
@@ -150,9 +164,11 @@ export default function Answer() {
                     "description": description,
                     "wordToMe": wordToMe,
                     "email": email,
-                    "time": firebase.database.ServerValue.TIMESTAMP
+                    "time": date,
+                    "opt": opt
                     });
-                    console.log("Message Sent!");
+                    // setShouldRender(true);
+                    window.alert("Message Sent!");
                 }else if (name === "defaultName" && wordToMe === "defaultWordToMeLongLongLong"){
                     setName(" ");
                     setWordToMe(" ");

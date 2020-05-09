@@ -161,4 +161,6 @@ img{
 .Display{
   min-height: 400px;
   background-color: rgba(194, 255, 199, 0.733);
+  display: block;
+  flex-wrap: wrap;
 }

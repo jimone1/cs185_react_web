@@ -3,7 +3,7 @@ import Home from './Home'
 import Images from './Images'
 import Videos from './Videos'
 import Projects from './Projects'
-import AskMeAnythingPage from './AskMeAnythingPage.js'
+import HomePage from './HomePage.js'
 
 class Body extends Component {
     displayContent = () => {
@@ -17,7 +17,7 @@ class Body extends Component {
         else if(activeTab === 4) 
             return <Projects/>
         else if(activeTab === 5)
-            return <AskMeAnythingPage/>
+            return <HomePage/>
     }
     render() {
         return (

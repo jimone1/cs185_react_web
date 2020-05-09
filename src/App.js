@@ -3,6 +3,7 @@ import './App.css';
 import TabList from './Components/TabList'
 import Body from './Components/Body'
 import {Helmet} from 'react-helmet'
+
 export class App extends Component{
   constructor(){
     super();
@@ -34,6 +35,7 @@ export class App extends Component{
         title: 'CONTACT'
       }
     ]
+    
     return (
       <div className="Body">
         <div className="main-body">
