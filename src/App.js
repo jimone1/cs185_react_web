@@ -66,6 +66,9 @@ export class App extends Component{
       },{
         id: 5,
         title: 'CONTACT'
+      },{
+        id: 6,
+        title: "MOVIE"
       }
     ]
     

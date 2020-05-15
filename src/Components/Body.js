@@ -4,6 +4,7 @@ import Images from './Images'
 import Videos from './Videos'
 import Projects from './Projects'
 import Display from './Display.js'
+import MovieGallery from './MovieGallery';
 
 class Body extends Component {
     displayContent = () => {
@@ -18,6 +19,8 @@ class Body extends Component {
             return <Projects/>
         else if(activeTab === 5)
             return <Display data={this.props.data} changeUpdate={this.props.changeUpdate}/>
+        else if(activeTab === 6)
+            return <MovieGallery/>
     }
     render() {
         return (

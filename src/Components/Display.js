@@ -2,7 +2,6 @@ import { ListItem, List } from '@material-ui/core';
 import React, { Component } from 'react';
 import Paper from '@material-ui/core/Paper';
 import AllQuestions from './AllQuestions.js'
-import fire from './config.js'
 
 
 
