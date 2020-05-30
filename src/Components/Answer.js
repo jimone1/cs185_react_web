@@ -91,7 +91,7 @@ class Answer extends Component {
                 shrink: true,
             }}
             variant="outlined"
-            onChange={(event) => {this.state.setDescription(event.target.value)}}
+            onChange={(event) => {this.setState({description: event.target.value})}}
             />
             <TextField required
             error = {!checkMessage(this.state.wordToMe)}

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { createMuiTheme } from '@material-ui/core/styles';
 import GridList from '@material-ui/core/GridList';
 import Modal from '@material-ui/core/Modal';
-import OneMovie from './OneMovie.js'
+import Button from '@material-ui/core/Button';
+import OneMovie from './OneMovie.js';
 
 function rootStyle(){
     return {
@@ -10,6 +10,8 @@ function rootStyle(){
         flexWrap: 'wrap',
         justifyContent: 'space-around',
         overflow: 'hidden',
+        width: '100vw',
+        height: 'auto'
     }
 }
 
@@ -26,41 +28,21 @@ function GridListStyle(){
     }
 }
 
-const movies = 
-    [{
-        key: "0",
-        id: "tt0990372"
-    },{
-        key: "1",
-        id: "tt6751668"
-    },{
-        key: "2",
-        id: "tt0478087"
-    },{
-        key: "3",
-        id: "tt7016936"
-    },{
-        key: "4",
-        id: "tt0944947"
-    },{
-        key: "5",
-        id: "tt6966692"
-    },{
-        key: "6",
-        id: "tt0245429"
-    },{
-        key: "7",
-        id: "tt5311514"
-}]
-
-  
 function getModalStyle() {
     return {
         position: "absolute",
         display: "flex",
         top: "23vh",
-        left: "23vw",
+        left: "30%",
+        minWidth: "400px",
         backgroundColor: "white"
+    }
+}
+
+function buttonStyle() {
+    return {
+        height: 'auto',
+        width: 'auto'
     }
 }
 
@@ -74,6 +56,7 @@ function infoStyle() {
     }
 }
 
+var change = false;
 
 class MovieGallery extends Component {
     constructor(){
@@ -81,38 +64,74 @@ class MovieGallery extends Component {
         this.state = {
             moviePoster: "",
             open: false,
-            key: 1
-        }
+            key: 1,
+            visibleItems: 9,
+            visibility: "visible"
+        };
         this.changeMoviePoster = (data) => {
             this.setState({
                 moviePoster: data
             })
-        }
+        };
         this.changeKey = (k) => {
             this.setState({
                 key: k
             })
-        }
+        };
         this.changeOpen = (boo) => {
             this.setState({
                 open: boo    
             })
-        }
+        };
+    }
+
+    
+
+    shouldComponentUpdate(nextProps){
+        const movieListChanged = (this.props.selectedMovieList !== nextProps.selectedMovieList);
+        return (movieListChanged || change);
     }
     
+    componentDidUpdate(){
+        change = false;
+        this.setState({
+            visibleItems: 9,
+            
+        })
+        if(this.props.movies.length > this.state.visibleItems)
+            this.setState({visibility: "hidden"})
+        else this.setState({visibility: "visible"})
+    }
+
     render() {
+        
+        if(this.props.movies.length > this.state.visibleItems)
+            this.setState({visibility: "hidden"})
+        else this.setState({visibility: "visible"})
         return (
             <div style={rootStyle()}>
                 <GridList cellHeight={150} spacing={1} style={GridListStyle()}>
-                    {Object.values(movies).map((movie) => (
-                        <OneMovie movieid={movie.id} 
-                                    indexKey={movie.key} 
+                    {Object.values(this.props.movies).slice(0, this.state.visibleItems).map((movie, key) => (
+                        <OneMovie movieid={movie.IMDBID} 
+                                    indexKey={key} 
                                     changeIndexKey={this.changeKey} 
                                     changeOpen={this.changeOpen}
-                                    changeMoviePoster={this.changeMoviePoster} />
-                    ))}
+                                    changeMoviePoster={this.changeMoviePoster} />)
+                                    )
+                    }
+                    <Button style={buttonStyle(), {visibility: this.state.visibility} }  color="primary" onClick={
+                        () => {
+                            if(this.props.movies.length > this.state.visibleItems){
+                                
+                                this.setState({visibleItems: this.state.visibleItems+8,
+                                                visibility: "hidden"});
+                                change= true;
+                            }
+                        }
+                    }><h2>Load More</h2></Button>
+                    
                 </GridList>
-                {/* {console.log(this.state.moviePoster.Poster)} */}
+                
                 <Modal
                     open={this.state.open}
                     onClose={() => {this.changeOpen(false)}}
@@ -128,6 +147,15 @@ class MovieGallery extends Component {
                                     Genre: {this.state.moviePoster.Genre}<br/>
                                     imdbRating: {this.state.moviePoster.imdbRating}
                                 </p>
+                                <Button style={buttonStyle()} color="primary" onClick={
+                                    () => {
+                                        try {
+                                            
+                                        } catch (error) {
+                                            console.error(error)
+                                        }
+                                    }
+                                }>Delete This Movie</Button>
                             </div>
                         </div>
                     }

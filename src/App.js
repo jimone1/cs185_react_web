@@ -11,8 +11,24 @@ export class App extends Component{
     this.state = {
       activeTab: 1,
       data: [],
-      shouldUpdate: true
+      movies: [],
+      shouldUpdate: true,
+      selectedMovieList: "All",
+      movieLists: ["All"]
     }
+    this.clearMovies = () => {
+      this.setState({
+        movies: []
+      })
+    }
+    this.changeMovieLists = (val) => {
+      this.state.movieLists.push(val)
+    }
+    this.changeSelectedMovieList = (val) => {
+      this.setState({
+        selectedMovieList: val
+      })
+    } 
     this.changeTab = (id) => {
       this.setState({
         activeTab: id
@@ -20,10 +36,11 @@ export class App extends Component{
     }
     this.changeUpdate = () => {
       this.setState({
-        shouldUpdate: false
+        shouldUpdate: true
       })
     }
   }
+
 
   componentDidMount(){
       let ref = fire.database().ref('messages');
@@ -32,6 +49,20 @@ export class App extends Component{
           var val = snapshot.val()
           var keys = Object.keys(val)
           for(var i = keys.length-1; i >= 0; i--) this.state.data.push(val[keys[i]])
+      })   
+      ref = fire.database().ref("MovieLists");
+      ref.on('value', snapshot => {
+        this.state.data.length = 0;
+        var val = snapshot.val()
+        var keys = Object.keys(val)
+        for(var i = keys.length-1; i >= 0; i--) this.state.movieLists.push(val[keys[i]])
+      })   
+      ref = fire.database().ref(this.state.selectedMovieList);
+      ref.on('value', snapshot => {
+        this.state.data.length = 0;
+        var val = snapshot.val()
+        var keys = Object.keys(val)
+        for(var i = keys.length-1; i >= 0; i--) this.state.movies.push(val[keys[i]])
       })   
   }
 
@@ -45,6 +76,14 @@ export class App extends Component{
           var val = snapshot.val()
           var keys = Object.keys(val)
           for(var i = keys.length-1; i >= 0; i--) this.state.data.push(val[keys[i]])
+        })
+        
+        ref = fire.database().ref(this.state.selectedMovieList);
+        ref.on('value', snapshot => {
+          this.state.data.length = 0;
+          var val = snapshot.val()
+          var keys = Object.keys(val)
+          for(var i = keys.length-1; i >= 0; i--) this.state.movies.push(val[keys[i]])
         })   
       }
   }
@@ -69,6 +108,12 @@ export class App extends Component{
       },{
         id: 6,
         title: "MOVIE"
+      },{
+        id: 7,
+        title: "ADD MOVIE"
+      },{
+        id: 8,
+        title: "ADD MOVIE LIST"
       }
     ]
     
@@ -83,7 +128,17 @@ export class App extends Component{
                     changeTab={this.changeTab} 
                     activeTab={this.state.activeTab}/>
           </div>
-          <Body activeTab={this.state.activeTab} data={this.state.data} changeUpdate={this.changeUpdate}/>
+          <Body activeTab={this.state.activeTab} 
+                data={this.state.data} 
+                movies={this.state.movies} 
+                changeUpdate={this.changeUpdate}
+                selectedMovieList={this.state.selectedMovieList}
+                movieLists={this.state.movieLists}
+                changeSelectedMovieList={this.changeSelectedMovieList}
+                changeMovieLists={this.changeMovieLists}
+                clearMovies={this.clearMovies}
+                updateMovies={this.updateMovies}
+          />
         </div>
       </div>
     );
