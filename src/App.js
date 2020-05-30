@@ -45,21 +45,18 @@ export class App extends Component{
   componentDidMount(){
       let ref = fire.database().ref('messages');
       ref.on('value', snapshot => {
-          this.state.data.length = 0;
           var val = snapshot.val()
           var keys = Object.keys(val)
           for(var i = keys.length-1; i >= 0; i--) this.state.data.push(val[keys[i]])
       })   
       ref = fire.database().ref("MovieLists");
       ref.on('value', snapshot => {
-        this.state.data.length = 0;
         var val = snapshot.val()
         var keys = Object.keys(val)
         for(var i = keys.length-1; i >= 0; i--) this.state.movieLists.push(val[keys[i]])
       })   
       ref = fire.database().ref(this.state.selectedMovieList);
       ref.on('value', snapshot => {
-        this.state.data.length = 0;
         var val = snapshot.val()
         var keys = Object.keys(val)
         for(var i = keys.length-1; i >= 0; i--) this.state.movies.push(val[keys[i]])
@@ -72,7 +69,7 @@ export class App extends Component{
       if(this.state.shouldUpdate !== prevState.shouldUpdate){
         let ref = fire.database().ref('messages');
         ref.on('value', snapshot => {
-          this.state.data.length = 0;
+
           var val = snapshot.val()
           var keys = Object.keys(val)
           for(var i = keys.length-1; i >= 0; i--) this.state.data.push(val[keys[i]])
@@ -80,7 +77,7 @@ export class App extends Component{
         
         ref = fire.database().ref(this.state.selectedMovieList);
         ref.on('value', snapshot => {
-          this.state.data.length = 0;
+
           var val = snapshot.val()
           var keys = Object.keys(val)
           for(var i = keys.length-1; i >= 0; i--) this.state.movies.push(val[keys[i]])

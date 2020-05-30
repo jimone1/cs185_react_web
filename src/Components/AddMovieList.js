@@ -43,7 +43,7 @@ class AddMovieList extends Component {
                                 "List": this.state.newMovieListName
                             });
                             fire.database().ref(this.state.newMovieListName).push({
-                                IMDBID: "0"
+                                IMDBID: "-1"
                             })
                             this.props.changeUpdate();
                             window.alert("Message Sent!");

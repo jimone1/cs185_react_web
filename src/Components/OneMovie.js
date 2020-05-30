@@ -34,7 +34,6 @@ class OneMovie extends Component {
     }
 
     render() {
-
         if(!this.state.movieData.Poster || this.state.movieData === 'N/A') return null;
         return (
             <GridListTile key={this.props.indexKey} cols={2} rows={2} >
@@ -47,6 +46,7 @@ class OneMovie extends Component {
                         onClick={() =>{
                             this.props.changeIndexKey(this.props.indexKey);
                             this.props.changeOpen(true);
+                            this.props.changeChange(true);
                             this.props.changeMoviePoster(this.state.movieData)
                         }}>
                         <SubjectIcon />

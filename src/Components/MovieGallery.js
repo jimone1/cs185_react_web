@@ -3,6 +3,19 @@ import GridList from '@material-ui/core/GridList';
 import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
 import OneMovie from './OneMovie.js';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import fire from './config.js'
+import { faWindows } from '@fortawesome/free-brands-svg-icons';
+
+function formControlStyle() {
+    return {
+        minWidth:" 120px",
+        marginLeft: "4%",
+    }
+}
 
 function rootStyle(){
     return {
@@ -56,7 +69,12 @@ function infoStyle() {
     }
 }
 
+var selectedMovieList;
 var change = false;
+var modalChange = false;
+function changeChange(boo){
+    modalChange = boo;
+}
 
 class MovieGallery extends Component {
     constructor(){
@@ -65,49 +83,47 @@ class MovieGallery extends Component {
             moviePoster: "",
             open: false,
             key: 1,
-            visibleItems: 9,
-            visibility: "visible"
+            visibleItems: 8,
+            visibility: "visible",
+            movieLists: []
         };
-        this.changeMoviePoster = (data) => {
-            this.setState({
-                moviePoster: data
-            })
-        };
-        this.changeKey = (k) => {
-            this.setState({
-                key: k
-            })
-        };
-        this.changeOpen = (boo) => {
-            this.setState({
-                open: boo    
-            })
-        };
-    }
+        let ref = fire.database().ref("MovieLists");
+        ref.on('value', snapshot => {
+          var val = snapshot.val()
+          var keys = Object.keys(val)
+          for(var i = keys.length-1; i >= 0; i--) {
+            this.state.movieLists.push(val[keys[i]]["List"])
+          }
+        })   
+        this.changeMoviePoster = (data) => {this.setState({moviePoster: data})};
+        this.changeKey = (k) => {this.setState({key: k})};
+        this.changeOpen = (boo) => {this.setState({open: boo})};}
 
-    
 
     shouldComponentUpdate(nextProps){
         const movieListChanged = (this.props.selectedMovieList !== nextProps.selectedMovieList);
-        return (movieListChanged || change);
+        return (movieListChanged || change || modalChange || this.props.changeMovieGallery);
     }
     
     componentDidUpdate(){
-        change = false;
-        this.setState({
-            visibleItems: 9,
-            
-        })
-        if(this.props.movies.length > this.state.visibleItems)
-            this.setState({visibility: "hidden"})
-        else this.setState({visibility: "visible"})
+        if(change){
+            if(this.props.movies.length > this.state.visibleItems) this.setState({visibility: "hidden"})
+            else this.setState({visibility: "visible"})
+            this.setState({visibleItems: 8})
+            change = false;
+        }
+        modalChange = false;
+        this.props.updated();
     }
 
     render() {
         
-        if(this.props.movies.length > this.state.visibleItems)
-            this.setState({visibility: "hidden"})
-        else this.setState({visibility: "visible"})
+        
+        selectedMovieList = this.props.selectedMovieList;
+
+        
+        console.log("here: ", this.props.movies)
+
         return (
             <div style={rootStyle()}>
                 <GridList cellHeight={150} spacing={1} style={GridListStyle()}>
@@ -116,7 +132,8 @@ class MovieGallery extends Component {
                                     indexKey={key} 
                                     changeIndexKey={this.changeKey} 
                                     changeOpen={this.changeOpen}
-                                    changeMoviePoster={this.changeMoviePoster} />)
+                                    changeMoviePoster={this.changeMoviePoster} 
+                                    changeChange={changeChange} />)
                                     )
                     }
                     <Button style={buttonStyle(), {visibility: this.state.visibility} }  color="primary" onClick={
@@ -125,7 +142,7 @@ class MovieGallery extends Component {
                                 
                                 this.setState({visibleItems: this.state.visibleItems+8,
                                                 visibility: "hidden"});
-                                change= true;
+                                change = true;
                             }
                         }
                     }><h2>Load More</h2></Button>
@@ -134,7 +151,7 @@ class MovieGallery extends Component {
                 
                 <Modal
                     open={this.state.open}
-                    onClose={() => {this.changeOpen(false)}}
+                    onClose={() => {changeChange(true); this.changeOpen(false)}}
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description">
                     {
@@ -147,10 +164,51 @@ class MovieGallery extends Component {
                                     Genre: {this.state.moviePoster.Genre}<br/>
                                     imdbRating: {this.state.moviePoster.imdbRating}
                                 </p>
+                                <FormControl style={formControlStyle()}>
+                                    <InputLabel id="demo-simple-select-label" style={{color: "white"}} >movieLists</InputLabel>
+                                    <Select 
+                                    labelId="demo-simple-select-label"
+                                    id="demo-simple-select"
+                                    value={selectedMovieList}
+                                    onChange={(event) => {
+                                        selectedMovieList = event.target.value;
+                                        fire.database().ref(selectedMovieList).push({
+                                            IMDBID: this.state.moviePoster.imdbID 
+                                        });
+
+
+                                        window.alert("succesfully added to "+ selectedMovieList)
+                                        
+                                    }}>
+                                        <MenuItem value="Add To List" disabled>
+                                            Add To List
+                                        </MenuItem>
+                                    {
+                                        this.state.movieLists.map((value) => (
+                                            <MenuItem value={value}>{value}</MenuItem>
+                                        ))
+                                    }
+                                    </Select>
+                                </FormControl>
                                 <Button style={buttonStyle()} color="primary" onClick={
                                     () => {
                                         try {
+                                            this.props.movieLists.map((movielist) => {
+                                                let ref = fire.database().ref(movielist);
+                                                ref.on('value', snapshot => {
+                                                    var val = snapshot.val()
+                                                    var keys = Object.keys(val)
+                                                    for(var i = keys.length-1; i >= 0; i--){
+                                                        if(val[keys[i]]["IMDBID"] === -1 || val[keys[i]]["IMDBID"] === this.state.moviePoster.imdbID ){
+                                                            console.log(keys[i])
+                                                            fire.database().ref(movielist).child(keys[i]).remove();
+                                                        }
+                                                    }
+                                                })   
+                                            })
+                                            this.props.changed();
                                             
+                                            window.alert("successfully deleted " + this.state.moviePoster.Title)
                                         } catch (error) {
                                             console.error(error)
                                         }
