@@ -111,6 +111,9 @@ export class App extends Component{
       },{
         id: 8,
         title: "ADD MOVIE LIST"
+      },{
+        id: 9,
+        title: "MOVIE GRAPH"
       }
     ]
     

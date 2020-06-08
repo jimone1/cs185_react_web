@@ -57,8 +57,9 @@ class MoviePage extends Component {
     }
 
     
-    async shouldComponentUpdate(){
-        return (this.state.change || this.state.foundlookForMovieID) ;
+    shouldComponentUpdate(){
+        console.log("need to update")
+        return (this.state.change || this.state.changeMovieGallery) ;
     }
 
 
@@ -135,7 +136,11 @@ class MoviePage extends Component {
                                     .then( async(res) => {
                                         if(res.Title === this.state.lookForMovie){
                                             const id = await res.imdbID
-                                            this.setState({movies: {"IMDBID": id}, changeMovieGallery: true})
+                                            if(id.ok){
+                                                this.setState({movies: {"IMDBID": id}, changeMovieGallery: true})
+
+                                            }
+                                            
                                             
                                             return;
                                         }else{

@@ -102,6 +102,7 @@ class MovieGallery extends Component {
 
     shouldComponentUpdate(nextProps){
         const movieListChanged = (this.props.selectedMovieList !== nextProps.selectedMovieList);
+        console.log(this.props.changeMovieGallery)
         return (movieListChanged || change || modalChange || this.props.changeMovieGallery);
     }
     

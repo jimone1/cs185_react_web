@@ -7,6 +7,7 @@ import Display from './Display.js'
 import MoviePage from './MoviePage';
 import AddNewMovie from './AddNewMovie'
 import AddMovieList from './AddMovieList';
+import MovieGraph from './MovieGraph';
 
 class Body extends Component {
     displayContent = () => {
@@ -36,6 +37,7 @@ class Body extends Component {
         else if(activeTab === 8)
             return <AddMovieList changeUpdate={this.props.changeUpdate} 
                                 changeMovieLists={this.props.changeMovieLists}/>
+        else if (activeTab === 9) return <MovieGraph/>
     }
     render() {
         return (
